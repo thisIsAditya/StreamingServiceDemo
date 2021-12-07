@@ -18,7 +18,7 @@ const dbURI = process.env.MONGODB_URI || MONGODB_URI;
 
 //Connection Syntax
 Mongoose.connect(dbURI,{useNewUrlParser:true, useUnifiedTopology:true})
- .then((result)=>{app.listen(PORT);})
+ .then((result)=>{app.listen(PORT); console.log(`Running on port ${PORT}`)})
  .catch((err)=>console.log(err))
 
 
@@ -34,15 +34,19 @@ const fileStorageEngine = multer.diskStorage({
 
 const upload = multer({storage: fileStorageEngine});
 
-if(process.env.NODE_ENV === "production"){
-    app.use(express.static('client/build'));
-}
-
 //Middlewares
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 app.use(cors());
 app.use('/uploads',express.static('uploads'));
+
+if(process.env.NODE_ENV === "production"){
+    app.use(express.static('client/build'));
+    const path = require("path");
+    app.get("*",(req,res)=>{
+        res.sendFile(path.resolve(__dirname,'client','build','index.html'));
+    });
+}
 
 
 //WORKING AND TESTED (ON POSTMAN) ENDPOINTS
@@ -97,7 +101,7 @@ app.post('/',(req,resp)=>{
      })
 })
 
-app.get('/:id',(req,res)=>{
+app.get('/view/:id',(req,res)=>{
     // Ensure there is a range given for the video
   const range = req.headers.range;
   if (!range) {
@@ -105,32 +109,33 @@ app.get('/:id',(req,res)=>{
   }
 
   // get video stats
-  Movie.findById(req.params.id)
-   .then((result)=>{
-       const videoPath = result.vid_path;
-       const videoSize = fs.statSync(videoPath).size;
-       // Parse Range
-       const CHUNK_SIZE = 10 ** 6; // 1MB
-       const start = Number(range.replace(/\D/g, ""));
-       const end = Math.min(start + CHUNK_SIZE, videoSize - 1);
-     
-       // Create headers
-       const contentLength = end - start + 1;
-       const headers = {
-         "Content-Range": `bytes ${start}-${end}/${videoSize}`,
-         "Accept-Ranges": "bytes",
-         "Content-Length": contentLength,
-         "Content-Type": "video/mp4",
-       };
-     
-       // HTTP Status 206 for Partial Content
-       res.writeHead(206, headers);
-     
-       // create video read stream for this particular chunk
-       const videoStream = fs.createReadStream(videoPath, { start, end });
-     
-       // Stream the video chunk to the client
-       videoStream.pipe(res);
-   })
+    Movie.findById(req.params.id)
+    .then((result)=>{
+        const videoPath = result.vid_path;
+        const videoSize = fs.statSync(videoPath).size;
+        // Parse Range
+        const CHUNK_SIZE = 10 ** 6; // 1MB
+        const start = Number(range.replace(/\D/g, ""));
+        const end = Math.min(start + CHUNK_SIZE, videoSize - 1);
+        
+        // Create headers
+        const contentLength = end - start + 1;
+        const headers = {
+            "Content-Range": `bytes ${start}-${end}/${videoSize}`,
+            "Accept-Ranges": "bytes",
+            "Content-Length": contentLength,
+            "Content-Type": "video/mp4",
+        };
+        
+        // HTTP Status 206 for Partial Content
+        res.writeHead(206, headers);
+        
+        // create video read stream for this particular chunk
+        const videoStream = fs.createReadStream(videoPath, { start, end });
+        
+        // Stream the video chunk to the client
+        videoStream.pipe(res);
+    })
+    .catch((err)=>console.log(err))
 
 })

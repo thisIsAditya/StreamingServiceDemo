@@ -4,7 +4,7 @@ import { ThumnailGrid } from "../ThumbnailGrid/ThumnailGrid";
 import Loading from "../Loading/Loading";
 import ErrorComponent from "../ErrorComponent/ErrorComponent";
 const DisplayArea = () => {
-    const {data : movies, isPending, err}= useFetch("http://localhost:3001/")
+    const {data : movies, isPending, err}= useFetch("/")
     return(
         <Container className="p-4">
             {isPending && <Loading />}

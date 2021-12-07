@@ -8,7 +8,7 @@ import Loading from "../Loading/Loading";
 
 const VideoArea = () => {
     const {id} = useParams();
-    const fetch_string = `http://localhost:3001/${id}`
+    const fetch_string = `/view/${id}`
     const req = {
         method:"POST",
         body:JSON.stringify({
@@ -18,7 +18,7 @@ const VideoArea = () => {
             "Content-type": "application/json"
         }
     }
-    const {data : movies , isPending, err} = useFetch("http://localhost:3001/",req);
+    const {data : movies , isPending, err} = useFetch("/view/",req);
     
     return(
         <Container className=" py-4 rounded">

@@ -2,7 +2,7 @@ import { Card } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
 const Thumbnail = ({id, name, lang, year, thumb_path}) => {
-    const thumbnailSrc = `http://localhost:3001/${thumb_path}`;
+    const thumbnailSrc = `/${thumb_path}`;
     return(
         <Link to={`/view/${id}`}>
             <Card className="bg-dark text-white m-2" style={{width:"18rem"}} >
