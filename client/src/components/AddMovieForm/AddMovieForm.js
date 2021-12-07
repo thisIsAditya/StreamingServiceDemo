@@ -25,7 +25,7 @@ const AddMovieForm = () => {
         formData.append("thumbnail",thumbnailFile);
         formData.append("video",videoFile);
 
-        fetch('http://localhost:3001/AddMovies',{
+        fetch('/api/AddMovies',{
             method : "POST",
             body: formData
         })
