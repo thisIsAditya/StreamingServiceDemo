@@ -8,7 +8,7 @@ import Loading from "../Loading/Loading";
 
 const VideoArea = () => {
     const {id} = useParams();
-    const fetch_string = `/view/${id}`
+    const fetch_string = `/api/view/${id}`
     const req = {
         method:"POST",
         body:JSON.stringify({
