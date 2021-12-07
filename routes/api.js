@@ -62,7 +62,7 @@ Movie.find()
 })
 
 //Fetching movie by ID
-router.post('/',(req,resp)=>{
+router.post('/view/',(req,resp)=>{
 console.log(req.body);
 Movie.findById(req.body._id)
  .then((result)=>{
@@ -72,6 +72,7 @@ Movie.findById(req.body._id)
      console.log(err);
  })
 })
+
 
 router.get('/view/:id',(req,res)=>{
 // Ensure there is a range given for the video
