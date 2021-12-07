@@ -39,7 +39,7 @@ app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 app.use(cors());
 app.use('/uploads',express.static('uploads'));
-
+console.log(process.e.NODE_ENV);
 if(process.env.NODE_ENV === "production"){
     app.use(express.static('client/build'));
     const path = require("path");
