@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const multer = require('multer');
-const Movie = require('./models/movies');
+const Movie = require('../models/movies');
 const fs = require("fs");
 
 
