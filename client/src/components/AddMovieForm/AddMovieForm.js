@@ -39,9 +39,12 @@ const AddMovieForm = () => {
                 setIsPending(false);
                 history.push('/');
              }
+             else{
+                 throw "File type was invalid.";
+             }
          })
          .catch(err=>{
-             console.log(err);
+             console.log(err, "This is error");
              setIsPending(false);
              setErr(err.message);
             })
