@@ -30,6 +30,7 @@ const uploadFields = [{
     name:'video',maxCount:1
 }
 ]
+
 router.post('/AddMovies',upload.fields(uploadFields),(req,resp)=>{
 const data = req.body;
 const movie = new Movie({

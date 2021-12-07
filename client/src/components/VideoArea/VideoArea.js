@@ -18,7 +18,7 @@ const VideoArea = () => {
             "Content-type": "application/json"
         }
     }
-    const {data : movies , isPending, err} = useFetch("/view/",req);
+    const {data : movies , isPending, err} = useFetch("/api/view/",req);
     
     return(
         <Container className=" py-4 rounded">
