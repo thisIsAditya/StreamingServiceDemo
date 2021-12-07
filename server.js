@@ -4,7 +4,10 @@ const Mongoose = require('mongoose');
 const routes = require('./routes/api');
 
 const PORT = process.env.PORT || 3001;
-const MONGODB_URI = "mongodb+srv://helios:Asdfghjkl_456@helios.xiyur.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
+const dbName = "myFirstDatabase";
+const clusterName = "helios";
+
+const MONGODB_URI = `mongodb+srv://${clusterName}:${process.env.DB_PASS}@helios.xiyur.mongodb.net/${dbName}?retryWrites=true&w=majority`;
 
 //IMPORTING DB Models
 
