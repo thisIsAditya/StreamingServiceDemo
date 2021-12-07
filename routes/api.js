@@ -6,8 +6,6 @@ const fs = require("fs");
 
 
 
-
-
 //Multer DiskStorage
 const fileStorageEngine = multer.diskStorage({
     destination: (req, file, cb)=>{
@@ -18,7 +16,35 @@ const fileStorageEngine = multer.diskStorage({
     }
 });
 
-const upload = multer({storage: fileStorageEngine});
+const upload = multer({
+    storage: fileStorageEngine,
+    fileFilter : (req, file, cb)=>{
+        if(file.fieldname === "thumbnail"){
+            if(
+                file.mimetype === 'image/jpg' ||
+                file.mimetype === 'image/png' ||
+                file.mimetype === 'image/jpeg'
+            ){
+                cb(null,true);
+            }
+            else{
+                cb(null, false);
+            }
+        }
+        else{
+            if(
+                file.mimetype === 'video/mp4' ||
+                file.mimetype === 'video/mkv'
+            ){
+                cb(null,true);
+            }
+            else{
+                cb(null, false);
+            }
+
+        }
+    }
+});
 
 //WORKING AND TESTED (ON POSTMAN) ENDPOINTS
 
@@ -49,6 +75,9 @@ movie.save()
      resp.send(err);
  })
 });
+
+
+
 
 //Fetch all movies
 router.get('/',(req,resp)=>{

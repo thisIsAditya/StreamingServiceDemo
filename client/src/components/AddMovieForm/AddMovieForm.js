@@ -42,6 +42,7 @@ const AddMovieForm = () => {
          })
          .catch(err=>{
              console.log(err);
+             setIsPending(false);
              setErr(err.message);
             })
     }
