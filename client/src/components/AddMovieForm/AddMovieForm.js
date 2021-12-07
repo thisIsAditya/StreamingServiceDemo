@@ -40,7 +40,7 @@ const AddMovieForm = () => {
                 history.push('/');
              }
              else{
-                 throw "File type was invalid.";
+                 throw "File type not accepted. Select files with correct extentions.";
              }
          })
          .catch(err=>{
@@ -56,17 +56,17 @@ const AddMovieForm = () => {
                     <Form onSubmit={handleSubmit}>
                         <Form.Group className="mb-3">
                             <Form.Label>Movie Name</Form.Label>
-                            <Form.Control name="name" type="text" placeholder="Enter Movie Name" onChange={e => setMovieName(e.target.value)} />
+                            <Form.Control name="name" type="text" placeholder="Enter Movie Name" onChange={e => setMovieName(e.target.value)} required />
                         </Form.Group>
 
                         <Form.Group className="mb-3">
                             <Form.Label>Year of Release</Form.Label>
-                            <Form.Control name="year" type="number"  placeholder="Enter Year of Release" onChange={e=>setYear(e.target.value)}/>
+                            <Form.Control name="year" type="number"  placeholder="Enter Year of Release" onChange={e=>setYear(e.target.value)} required />
                         </Form.Group>
 
                         <Form.Group className="mb-3">
                             <Form.Label>Language</Form.Label>
-                            <Form.Select name="lang" onChange={e=>setLang(e.target.value)}>
+                            <Form.Select name="lang" onChange={e=>setLang(e.target.value)}> 
                                 <option value="English">English</option>
                                 <option value="Hindi">Hindi</option>
                                 <option value="Tamil">Tamil</option>
@@ -77,11 +77,17 @@ const AddMovieForm = () => {
 
                         <Form.Group className="mb-3">
                             <Form.Label>Upload Thumbnail</Form.Label>
-                            <Form.Control name="thumbnail" type="file" onChange={thumbChangeHandler}/>
+                            <Form.Control name="thumbnail" type="file" onChange={thumbChangeHandler} required />
+                            <Form.Text className="text-muted">
+                                File extention accepted : jpg/jpeg/png
+                            </Form.Text>
                         </Form.Group>
                         <Form.Group className="mb-3">
                             <Form.Label>Upload Movie Video File</Form.Label>
-                            <Form.Control type="file" name="video" onChange={vidChangeHandler}/>
+                            <Form.Control type="file" name="video" onChange={vidChangeHandler} required />
+                            <Form.Text className="text-muted">
+                                File extention accepted : mp4/mkv
+                            </Form.Text>
                         </Form.Group>
                         {!isPending && <Button variant="primary" type="submit">
                             Submit
