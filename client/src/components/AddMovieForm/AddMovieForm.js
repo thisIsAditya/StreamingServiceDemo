@@ -1,8 +1,12 @@
 import { useState } from "react";
 import { Card, Form, Button } from "react-bootstrap";
 import { useHistory } from "react-router";
+import ErrorComponent from "../ErrorComponent/ErrorComponent";
+
 
 const AddMovieForm = () => {
+    const [isPending, setIsPending] = useState(false);
+    const [err, setErr] = useState(null);
     const history = useHistory();
     const [thumbnailFile,setThumbnailFile] = useState();
     const [videoFile, setVideoFile] = useState();
@@ -17,6 +21,7 @@ const AddMovieForm = () => {
     }
 
     const handleSubmit = (e)=>{
+        setIsPending(true);
         e.preventDefault();
         const formData = new FormData();
         formData.append("name",movieName);
@@ -31,10 +36,14 @@ const AddMovieForm = () => {
         })
          .then(resp => {
              if(resp.status<400){
+                setIsPending(false);
                 history.push('/');
              }
          })
-         .catch(err=>console.log(err))
+         .catch(err=>{
+             console.log(err);
+             setErr(err.message);
+            })
     }
     return(
         <div className="d-flex align-items-center justify-content-center mt-4">
@@ -71,10 +80,14 @@ const AddMovieForm = () => {
                             <Form.Label>Upload Movie Video File</Form.Label>
                             <Form.Control type="file" name="video" onChange={vidChangeHandler}/>
                         </Form.Group>
-                        <Button variant="primary" type="submit">
+                        {!isPending && <Button variant="primary" type="submit">
                             Submit
-                        </Button>
+                        </Button>}
+                        { isPending && <Button variant="primary" type="submit" disabled>
+                            Uploading...
+                        </Button>}
                     </Form>
+                    {err && <ErrorComponent err={err} />}
                 </Card.Body>
             </Card>
         </div>
